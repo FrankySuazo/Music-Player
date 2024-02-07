@@ -33,7 +33,6 @@ artist: "Quincy Larson",
 duration: "4:15",
 src: "https://s3.amazonaws.com/org.freecodecamp.mp3-player-project/cant-stay-down.mp3",
 
-	• Step 6:
 Add a third object with the following properties and values:
 
 id: 2,
