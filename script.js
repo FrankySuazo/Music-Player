@@ -1,3 +1,4 @@
+//HTML imports
 const playlistSongs = document.getElementById("playlist-songs");
 const playButton = document.getElementById("play");
 const pauseButton = document.getElementById("pause");
@@ -5,6 +6,7 @@ const nextButton = document.getElementById("next");
 const previousButton = document.getElementById("previous");
 const shuffleButton = document.getElementById("shuffle");
 
+//Songs list with src
 const allSongs = [
   {
     id: 0,
@@ -78,18 +80,23 @@ const allSongs = [
   },
 ];
 
+//This is what makes the information going through could be heard
 const audio = new Audio();
+
+//To spread the current information running
 let userData = {
   songs: [...allSongs],
   currentSong: null,
   songCurrentTime: 0,
 };
 
+//This is where the song list goes through and be orginize when user plays
 const playSong = (id) => {
   const song = userData?.songs.find((song) => song.id === id);
   audio.src = song.src;
   audio.title = song.title;
 
+  //if no song or before the songs plays starts/pause at 0
   if (userData?.currentSong === null || userData?.currentSong.id !== song.id) {
     audio.currentTime = 0;
   } else {
@@ -98,12 +105,15 @@ const playSong = (id) => {
   userData.currentSong = song;
   playButton.classList.add("playing");
 
+  //calling some functions for the MP3 to work, these last 4 lines are the 'heart' of the code
+    //The functions named here, are made further down of the code
   highlightCurrentSong();
   setPlayerDisplay();
   setPlayButtonAccessibleText();
   audio.play();
 };
 
+//The pause, will be connected to the further functions
 const pauseSong = () => {
   userData.songCurrentTime = audio.currentTime;
 
@@ -111,6 +121,7 @@ const pauseSong = () => {
   audio.pause();
 };
 
+//The next, will be connected to the further functions
 const playNextSong = () => {
   if (userData?.currentSong === null) {
     playSong(userData?.songs[0].id);
@@ -122,6 +133,7 @@ const playNextSong = () => {
   }
 };
 
+//The pause, will be connected to the further functions
 const playPreviousSong = () => {
   if (userData?.currentSong === null) return;
   else {
@@ -132,6 +144,7 @@ const playPreviousSong = () => {
   }
 };
 
+//Added the shuffle with Math.random, and the follwing function makes it works like any other song even if it was randomly selected 
 const shuffle = () => {
   userData?.songs.sort(() => Math.random() - 0.5);
   userData.currentSong = null;
@@ -143,6 +156,7 @@ const shuffle = () => {
   setPlayButtonAccessibleText();
 };
 
+//Added delete, like the old days of MP3
 const deleteSong = (id) => {
   if (userData?.currentSong?.id === id) {
     userData.currentSong = null;
@@ -152,6 +166,7 @@ const deleteSong = (id) => {
     setPlayerDisplay();
   }
 
+  //In case user hates the playlist and deletes everything, this reset everything . . .
   userData.songs = userData?.songs.filter((song) => song.id !== id);
   renderSongs(userData?.songs);
   highlightCurrentSong();
@@ -176,6 +191,7 @@ const deleteSong = (id) => {
   }
 };
 
+//function that will display for user view of current some, and local HTML imports
 const setPlayerDisplay = () => {
   const playingSong = document.getElementById("player-song-title");
   const songArtist = document.getElementById("player-song-artist");
@@ -186,6 +202,7 @@ const setPlayerDisplay = () => {
   songArtist.textContent = currentArtist ? currentArtist : "";
 };
 
+//In case they like a song
 const highlightCurrentSong = () => {
   const playlistSongElements = document.querySelectorAll(".playlist-song");
   const songToHighlight = document.getElementById(
@@ -199,6 +216,7 @@ const highlightCurrentSong = () => {
   if (songToHighlight) songToHighlight.setAttribute("aria-current", "true");
 };
 
+//The 'mapping' of all the information and data that will be organized for users view 
 const renderSongs = (array) => {
   const songsHTML = array
     .map((song) => {
@@ -241,6 +259,7 @@ playButton.addEventListener("click", () => {
   }
 });
 
+//These are the 'actions' that triggers the following action of the buttons. for example: click next, triggers the playNextSong function and does what a next button do
 pauseButton.addEventListener("click", pauseSong);
 
 nextButton.addEventListener("click", playNextSong);
@@ -249,6 +268,7 @@ previousButton.addEventListener("click", playPreviousSong);
 
 shuffleButton.addEventListener("click", shuffle);
 
+//What happens when song ended, it plays the next one, if there's a next one
 audio.addEventListener("ended", () => {
   const currentSongIndex = getCurrentSongIndex();
   const nextSongExists = userData?.songs[currentSongIndex + 1] !== undefined;
@@ -265,6 +285,7 @@ audio.addEventListener("ended", () => {
   }
 });
 
+//if there's no next one? Starts from teh beginning
 userData?.songs.sort((a, b) => {
   if (a.title < b.title) {
     return -1;
