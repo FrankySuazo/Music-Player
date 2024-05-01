@@ -18,6 +18,7 @@
   </head>
 
   <body>
+    <!-- The 'box' and bar of the MP3 selection-->
     <div class="container">
       <div class="player">
         <div class="player-bar">
@@ -25,12 +26,14 @@
             <div></div>
             <div></div>
           </div>
-          <h1 class="fcc-title">freeCodeCamp</h1>
+          <h1 class="fcc-title">MP3</h1>
           <div class="parallel-lines">
             <div></div>
             <div></div>
           </div>
         </div>
+
+        <!-- the image selection that will change depending one the song -->
         <div class="player-content">
           <div id="player-album-art">
             <img
@@ -38,11 +41,15 @@
               alt="song cover art"
             />
           </div>
+
+          <!-- The display of information depending of the song (title, artist, song) -->
           <div class="player-display">
             <div class="player-display-song-artist">
               <p id="player-song-title"></p>
               <p id="player-song-artist"></p>
             </div>
+
+            <!-- MP3 player's buttons (previous, start/pause, next)-->
             <div class="player-buttons">
               <button id="previous" class="previous" aria-label="Previous">
                 <svg
